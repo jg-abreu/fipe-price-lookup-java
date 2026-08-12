@@ -11,7 +11,7 @@ public class ApiConsumption {
     public String getData(String address) {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://foo.com/"))
+                .uri(URI.create(address))
                 .build();
         HttpResponse<String> response = null;
         try {
@@ -21,8 +21,9 @@ public class ApiConsumption {
             throw new RuntimeException(e);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
-    }
+        }
 
-        String json= response.body();
+        String json = response.body();
         return json;
+    }
 }
