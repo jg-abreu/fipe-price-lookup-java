@@ -5,6 +5,7 @@ import br.com.jgabreu.fipe.model.Models;
 import br.com.jgabreu.fipe.model.Vehicle;
 import br.com.jgabreu.fipe.service.ApiConsumption;
 import br.com.jgabreu.fipe.service.ConvertData;
+import br.com.jgabreu.fipe.service.JsonResultExporter;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -14,6 +15,7 @@ public class Main {
     private final String URL_BASE = "https://parallelum.com.br/fipe/api/v1/";
     private ApiConsumption consumption = new ApiConsumption();
     private ConvertData convertData = new ConvertData();
+    private JsonResultExporter jsonResultExporter = new JsonResultExporter();
 
     public void showMenu() {
         var menu = """
@@ -82,6 +84,7 @@ public class Main {
 
         System.out.println("All filtered vehicles with valuations by year: ");
         vehicles.forEach(System.out::println);
+        jsonResultExporter.export(vehicles);
 
     }
 
