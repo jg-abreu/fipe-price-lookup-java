@@ -19,7 +19,7 @@ public class Main {
 
     public void showMenu() {
         var menu = """
-                *** OPÇÕES ***
+                *** OPTIONS ***
                 Car
                 Motorcycle
                 Truck
@@ -36,11 +36,10 @@ public class Main {
         } else if (option.toLowerCase().contains("motorcycle")) {
             address = URL_BASE + "motos/marcas";
         } else {
-            address = URL_BASE + "camonhoes/marcas";
+            address = URL_BASE + "caminhoes/marcas";
         }
 
         var json = consumption.getData(address);
-        System.out.println(json);
         var brands = convertData.getList(json, Data.class);
         brands.stream()
                 .sorted(Comparator.comparing(Data::code))
@@ -53,7 +52,7 @@ public class Main {
         json = consumption.getData(address);
         var modelList = convertData.getData(json, Models.class);
 
-        System.out.println("\nModelos dessa marca: ");
+        System.out.println("\nModels from this brand: ");
         modelList.models().stream()
                 .sorted(Comparator.comparing(Data::code))
                 .forEach(System.out::println);

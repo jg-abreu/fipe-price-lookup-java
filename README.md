@@ -1,47 +1,58 @@
-![thumbnail-Desafio Java](https://github.com/jacqueline-oliveira/3257-java-desafio/assets/66698429/7d1ab66a-2a1c-48e8-825e-2b233c2c1aaa)
+# FIPE Price Lookup
 
-## 💾 Melhorias implementadas
+![Java 17](https://img.shields.io/badge/Java-17-ED8B00?logo=openjdk&logoColor=white)
+![Spring Boot 4](https://img.shields.io/badge/Spring_Boot-4-6DB33F?logo=springboot&logoColor=white)
+![Jackson](https://img.shields.io/badge/Jackson-JSON-2C2D72)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-Além do fluxo original do desafio, o projeto salva automaticamente o resultado de cada consulta em um arquivo JSON.
+A command-line app that looks up the average market price of cars, motorcycles and trucks in Brazil's [FIPE table](https://veiculos.fipe.org.br/), showing every model year at once and saving each search to a JSON file.
 
-- Ao final da busca, o resultado (marca, modelo, valor FIPE por ano) é exportado para a pasta `resultados/`.
-- Cada execução gera um arquivo novo, identificado por data e hora (`resultado_yyyy-MM-dd_HHmmss.json`), preservando o histórico de consultas anteriores.
-- Os arquivos gerados não são versionados no repositório (estão no `.gitignore`) — cada usuário mantém seus próprios resultados localmente.
+## Features
 
-# Desafio
-Vamos implementar uma aplicação para consultar o valor médio de veículos (carros, motos ou caminhões) de acordo com a tabela FIPE, que pode ser acessada através [desse site](https://veiculos.fipe.org.br/).
-- A consulta aos valores dos veículos pelo site tem o seguinte fluxo:
-- Primeiramente é necessário escolher o tipo do veículo: carro, moto ou caminhão.
-![image](https://github.com/jacqueline-oliveira/3257-java-desafio/assets/66698429/c64bc1d1-2957-4bca-9965-0ce2bf9a6207)
-- Depois disso, é necessário preencher a MARCA, MODELO e ANO para consulta.
-![image](https://github.com/jacqueline-oliveira/3257-java-desafio/assets/66698429/6d85805f-d6b6-40e8-a65d-17cb13a740ed)
-- Por fim, é exibida a avaliação apenas daquele ano escolhido.
-  ![image](https://github.com/jacqueline-oliveira/3257-java-desafio/assets/66698429/94910321-15ed-49fe-bffc-25e1c4ab52dc)
-## 🔨 Objetivos do projeto
-- O objetivo do projeto é ter um fluxo similar ao que é feito no site, porém com algumas melhorias.
-- Criaremos um projeto Spring com linha de comando, utilizando a classe Scanner para fazer interações com o usuário via terminal.
-- Solicitaremos que o usuário digite o tipo de veículo desejado (carro, caminhão ou moto).
-- Feito isso, listaremos todas as marcas daquele tipo de veículo, solicitando que o usuário escolha uma marca pelo código.
-- Após essa escolha, listaremos todos os modelos de veículos daquela marca.
-- Solicitaremos que o usuário digite um trecho do modelo que ele quer visualizar, por exemplo **PALIO**.
-- Listaremos apenas os modelos que tiverem a palavra **PALIO** no nome.
-- Usuário escolherá um modelo específico pelo código e, diferente do site, já listaremos as avaliações para **TODOS** os anos disponíveis daquele modelo, retornando uma lista de forma similar à imagem abaixo:
-![image](https://github.com/jacqueline-oliveira/3257-java-desafio/assets/66698429/3d0ac772-3eff-4bad-a1fd-e7c2f34a39bc)
-## Observações:
-- Para realização do desafio faremos o consumo de uma API, documentada [nesse link](https://deividfortuna.github.io/fipe/).
-- De acordo com o escolhido (carro, moto, ou caminhão) vamos fazer uma chamada a um dos endpoints abaixo para buscar as marcas:
-https://parallelum.com.br/fipe/api/v1/carros/marcas
-https://parallelum.com.br/fipe/api/v1/motos/marcas
-https://parallelum.com.br/fipe/api/v1/caminhoes/marcas
-- O retorno dessa requisição será uma lista com código e marca desejada. Caso o usuário queira por exemplo fazer uma consulta a modelos de carros da Fiat, que possui o código 21, terá que fazer uma nova requisição para o endpoint:
-https://parallelum.com.br/fipe/api/v1/carros/marcas/21/modelos
-- Feito isso, irá escolher um código de modelo, por exemplo esse **Palio Weekend Stile 1.6 mpi 16V 4p**, representado pelo código 560. Então deverá fazer uma terceira requisição para o endpoint:
-https://parallelum.com.br/fipe/api/v1/carros/marcas/21/modelos/560/anos
-- Para saber a avaliação para cada ano disponível, teremos que fazer requisições pelo código por ano, onde obteremos um retorno similar ao que é mostrado abaixo:
-https://parallelum.com.br/fipe/api/v1/carros/marcas/21/modelos/560/anos/2003-1
-![image](https://github.com/jacqueline-oliveira/3257-java-desafio/assets/66698429/0bed6f40-3112-442e-a6c5-33acd8301c6c)
-- Para podermos exibir em nossa aplicação as avaliações de todos os anos para esse modelo, será necessário trabalhar com as coleções e estruturas de repetição para poder exibir já todos as avaliações de todos os anos para o nosso usuário.
-- Utilize a biblioteca Jackson para a desserialização dos dados.
-- Modele as classes de acordo com o necessário para representar as marcas, modelos e dados dos veículos.
-- Relembre os conceitos vistos no curso para filtrar os modelos por um trecho do nome. 
-Bom desafio!
+- **Pick a vehicle type** — car, motorcycle or truck — and list all its brands
+- **Filter models by name** — type part of the name (e.g. `palio`) instead of scrolling through hundreds of models
+- **All years in one search** — unlike the FIPE website, which shows one year at a time, the app fetches the price for every available model year
+- **JSON export** — each search is saved to `resultados/resultado_yyyy-MM-dd_HHmmss.json`, keeping a history of previous lookups (the files are git-ignored)
+
+## How it works
+
+The app consumes the public [FIPE API](https://deividfortuna.github.io/fipe/) with Java's `HttpClient`, chaining one request per step: brands → models → available years → price for each year. Responses are deserialized with Jackson into records (`Data`, `Models`, `Vehicle`), and the model filter and sorting use the Streams API.
+
+## Tech stack
+
+Java 17 · Spring Boot 4 (command-line runner) · Jackson · Maven
+
+## Running
+
+Requirements: Java 17+ and an internet connection (for the FIPE API).
+
+```bash
+git clone https://github.com/jg-abreu/fipe-price-lookup-java.git
+cd fipe-price-lookup-java
+./mvnw spring-boot:run
+```
+
+Then follow the prompts: choose `Car`, `Motorcycle` or `Truck`, enter a brand code, part of the model name and the model code. The prices for every year are printed and saved under `resultados/`.
+
+## Project structure
+
+```
+src/main/java/br/com/jgabreu/fipe
+├── main/       interactive menu and the lookup flow
+├── model/      records mapped from the API responses
+└── service/    HTTP client, JSON conversion and the JSON exporter
+```
+
+## Credits
+
+Built as the solution to a challenge from [Alura](https://www.alura.com.br)'s course on lambdas, streams and the Spring Framework. The implementation, including the JSON export, is my own.
+
+## License
+
+Released under the [MIT License](LICENSE).
+
+## Author
+
+**João Abreu** — back-end developer and Computer Science student in Rio de Janeiro, Brazil.
+
+[GitHub](https://github.com/jg-abreu) · [LinkedIn](https://www.linkedin.com/in/jo%C3%A3o-abreuuu) · jgabreudev@gmail.com
