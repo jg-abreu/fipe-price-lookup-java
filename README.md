@@ -3,7 +3,6 @@
 ![Java 17](https://img.shields.io/badge/Java-17-ED8B00?logo=openjdk&logoColor=white)
 ![Spring Boot 4](https://img.shields.io/badge/Spring_Boot-4-6DB33F?logo=springboot&logoColor=white)
 ![Jackson](https://img.shields.io/badge/Jackson-JSON-2C2D72)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 A command-line app that looks up the average market price of cars, motorcycles and trucks in Brazil's [FIPE table](https://veiculos.fipe.org.br/), showing every model year at once and saving each search to a JSON file.
 
@@ -46,10 +45,6 @@ src/main/java/br/com/jgabreu/fipe
 ## Credits
 
 Built as the solution to a challenge from [Alura](https://www.alura.com.br)'s course on lambdas, streams and the Spring Framework. The implementation, including the JSON export, is my own.
-
-## License
-
-Released under the [MIT License](LICENSE).
 
 ## Author
 
